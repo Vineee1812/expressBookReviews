@@ -4,17 +4,20 @@ const books = require('../booksdb.js');
 
 const public_users = express.Router();
 
-// Retrieve all books
+/**
+ * Get all books (ASYNC/AWAIT)
+ */
 public_users.get('/', async (req, res) => {
   try {
-    const response = await axios.get("http://localhost:5000/books");
-    res.status(200).json(response.data);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(200).json(books);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
-// Retrieve book by ISBN
+/**
+ * Get book by ISBN
+ */
 public_users.get('/ISBN/:isbn', async (req, res) => {
   try {
     const isbn = req.params.isbn;
@@ -23,34 +26,38 @@ public_users.get('/ISBN/:isbn', async (req, res) => {
     } else {
       res.status(404).json({ message: "Book not found" });
     }
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
-// Retrieve books by author
+/**
+ * Get books by Author
+ */
 public_users.get('/author/:author', async (req, res) => {
   try {
     const author = req.params.author.toLowerCase();
     const result = Object.values(books).filter(
-      (book) => book.author.toLowerCase() === author
+      book => book.author.toLowerCase() === author
     );
     res.status(200).json(result);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
-// Retrieve books by title
+/**
+ * Get books by Title
+ */
 public_users.get('/title/:title', async (req, res) => {
   try {
     const title = req.params.title.toLowerCase();
     const result = Object.values(books).filter(
-      (book) => book.title.toLowerCase() === title
+      book => book.title.toLowerCase() === title
     );
     res.status(200).json(result);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
